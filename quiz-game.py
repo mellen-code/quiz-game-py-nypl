@@ -19,10 +19,17 @@ class Question:
 
 # return true or false based on if guess_index is correct
 def display_result(question, guess_index):
-    if guess_index == question.correct_index:
-        print('Correct')
-    else:
-        print (f"Sorry, the answer is {question.answers[question.correct_index]}")
+    try:
+        if int(guess_index) == int(question.correct_index):
+            print('Correct')
+            return True
+        else:
+            print (f"Sorry, the answer is {question.answers[question.correct_index]}")
+            return False
+    except:
+        print('Enter an answer number please!')
+        # Reruns question with new chance to input answer. Added true and false returns if keeping track of player score.
+        return display_result(question, input())
     
 
     
@@ -44,11 +51,18 @@ all_questions = [
 ]
 
 # Run each question and take player input. Waits until input is given on current question before going to next question:
+score = 0
+
 for question in all_questions:
     print(question.text)
     question.display_answers()
     # Asks the user to input text. Returns what was entered as a string
     guess_input = input("What is your guess? ")
-    display_result(question, int(guess_input))
+
+    if display_result(question, guess_input):
+        score +=1
+
     # Print a blank line (visual effect)
     print()
+
+print(f"Your score was {score} out of {len(all_questions)}")
